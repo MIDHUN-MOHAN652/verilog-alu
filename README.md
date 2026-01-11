@@ -1,4 +1,3 @@
-# verilog-alu
 # Parameterized Digital System using Verilog
 
 ## Overview
@@ -32,5 +31,3 @@ The design demonstrates separation of control and datapath, a core concept in di
 ## Tools Used
 - Icarus Verilog
 - GTKWave
-.vcd
-
