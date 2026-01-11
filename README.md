@@ -31,9 +31,3 @@ The design demonstrates separation of control and datapath, a core concept in di
 ## Tools Used
 - Icarus Verilog
 - GTKWave
-
-## How to Run
-```bash
-iverilog -o top_tb.out src/*.v tb/top_module_tb.v
-vvp top_tb.out
-gtkwave top_module.vcd
