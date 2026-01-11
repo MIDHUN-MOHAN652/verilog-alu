@@ -93,11 +93,3 @@ This layered verification approach ensures correctness beyond single test cases.
 - **GTKWave** – waveform analysis
 
 ---
-
-## How to Run
-
-### Top-Level Simulation
-```bash
-iverilog -o top_tb.out src/*.v tb/top_module_tb.v
-vvp top_tb.out
-gtkwave top_module.vcd
