@@ -24,7 +24,7 @@ The design demonstrates separation of control and datapath, a core concept in di
 - Exposes `done` signal to indicate valid output
 
 ## Verification
-- Individual testbenches for ALU and FSM
+- Individual testbenches for ALU,FSM and top_module
 - Top-level testbench verifies full system flow
 - Waveforms generated using GTKWave
 
