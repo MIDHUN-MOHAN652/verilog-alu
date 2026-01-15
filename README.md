@@ -60,7 +60,7 @@ This establishes a reliable baseline before deeper system-level verification.
 ---
 
 ## Testbenches
-- `alu_SelfCheck.v` – self-checking ALU testbench (primary focus)
+- `alu_SelfCheck_tb.v` – self-checking ALU testbench (primary focus)
 - `alu_tb.v` – basic ALU waveform-based testbench (legacy)
 - FSM and top-level testbenches retained for future verification stages
 
