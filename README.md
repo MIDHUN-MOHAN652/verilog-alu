@@ -1,73 +1,54 @@
 # Parameterized Digital System using Verilog  
-## Week 2 – Day 1 (Verification Focus)
+## Week 2 – Day 2 (FSM Robustness Verification)
 
 ## Overview
-This project implements a parameterized digital system in **Verilog**, consisting of a datapath (ALU) and a control unit (FSM), integrated through a top-level module.
+This project implements a parameterized digital system in **Verilog**, consisting of:
+- A datapath (ALU)
+- A control unit (FSM)
+- A top-level module integrating both
 
-Week 1 focused on **design and integration**.  
-Week 2 shifts focus to **verification depth and correctness assurance**.
+Week 1 focused on **design, integration, and basic verification**.  
+Week 2 focuses on **robustness and verification under non-ideal conditions**.
 
-The goal is not to add features, but to **prove existing logic behaves correctly under multiple conditions**.
+This README reflects the project state at **Week 2 – Day 2**, with emphasis on **FSM stress testing**.
 
 ---
 
 ## Architecture Summary
-The system is composed of three main blocks:
+The system is built around a clear separation of responsibilities:
 
-- **ALU (Datapath)** – performs arithmetic and logical operations
-- **FSM Controller (Control Unit)** – sequences operations across clock cycles
-- **Top Module** – integrates control and datapath
+- **ALU (Datapath)**  
+  Performs arithmetic and logical operations.
 
-This README reflects the state of the project at **Week 2, Day 1**, with emphasis on ALU verification.
+- **FSM Controller (Control Unit)**  
+  Sequences operations across clock cycles using defined states.
+
+- **Top Module**  
+  Integrates control and datapath and exposes a system-level interface.
+
+The architecture is intentionally simple to allow focused verification.
 
 ---
 
-## ALU (Datapath)
-- Parameterized data width
-- Supported operations:
-  - ADD, SUB
-  - AND, OR, XOR
-  - SHIFT LEFT, SHIFT RIGHT
-  - ZERO output
-- Generates status flags:
-  - Zero
-  - Carry
-  - Negative
-- Fully combinational implementation
+## FSM Controller
+- Moore finite state machine
+- States:
+  - IDLE
+  - LOAD
+  - EXECUTE
+  - DONE
+- Clean synchronous behavior
+- Reset forces IDLE state
+- Control outputs (`load`, `execute`, `done`) are mutually exclusive
 
 ---
 
 ## Verification Progress
 
-### Self-Checking ALU Verification (Week 2 – Day 1)
-The ALU is verified using a **self-checking testbench**, removing dependence on manual waveform inspection.
+### FSM Abuse and Robustness Testing (Week 2 – Day 2)
+The FSM is verified using an **abuse-style testbench**, where inputs are intentionally applied in invalid or unexpected ways.
 
-Key characteristics:
-- Expected results computed inside the testbench
-- Automatic comparison against DUT output
-- Clear PASS / FAIL reporting
-- Boundary and overflow cases included
-
-The testbench validates:
-- Arithmetic correctness
-- Logical operations
-- Shift operations
-- Carry propagation
-- Correct handling of edge cases
-
-This establishes a reliable baseline before deeper system-level verification.
-
----
-
-## Testbenches
-- `alu_SelfCheck_tb.v` – self-checking ALU testbench (primary focus)
-- `alu_tb.v` – basic ALU waveform-based testbench (legacy)
-- FSM and top-level testbenches retained for future verification stages
-
----
-
-## Tools Used
-- Icarus Verilog (simulation)
-- GTKWave (waveform analysis when required)
-
----
+Test scenarios include:
+- `start` held high for multiple cycles
+- `start` asserted while FSM is already busy
+- Back-to-back
