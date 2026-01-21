@@ -1,4 +1,4 @@
-module fsm_countroller (
+module fsm_controller (
     input wire clk,
     input wire rst,
     input wire start,
@@ -61,3 +61,4 @@ module fsm_countroller (
                 endcase
             end
 endmodule
+
