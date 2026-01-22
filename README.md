@@ -1,54 +1,45 @@
-# Parameterized Digital System using Verilog  
-## Week 2 – Day 2 (FSM Robustness Verification)
+## Verification Summary
 
-## Overview
-This project implements a parameterized digital system in **Verilog**, consisting of:
-- A datapath (ALU)
-- A control unit (FSM)
-- A top-level module integrating both
+Verification was performed incrementally at three levels:
 
-Week 1 focused on **design, integration, and basic verification**.  
-Week 2 focuses on **robustness and verification under non-ideal conditions**.
+### ALU Verification
+- Self-checking testbench used to validate arithmetic and logical operations
+- Boundary cases (overflow, underflow, zero result) tested
+- Carry, Zero, and Negative flags observed
+- PASS/FAIL reporting used instead of manual waveform inspection
 
-This README reflects the project state at **Week 2 – Day 2**, with emphasis on **FSM stress testing**.
+### FSM Verification
+- Dedicated abuse testbench used
+- FSM tested under:
+  - Prolonged `start` assertion
+  - Back-to-back `start` pulses
+  - `start` asserted during active operation
+  - Reset asserted in non-IDLE states
+- FSM confirmed to:
+  - Never lock up
+  - Never overlap control outputs
+  - Always return to IDLE after DONE
 
----
+### System-Level Verification
+- Top module tested under realistic and abusive conditions
+- Verified:
+  - One `done` pulse per valid operation
+  - Clean behavior under `start` spam
+  - Proper reset handling during operation
+- Waveforms generated and inspected to confirm correct sequencing and timing
 
-## Architecture Summary
-The system is built around a clear separation of responsibilities:
+## Known Limitations
 
-- **ALU (Datapath)**  
-  Performs arithmetic and logical operations.
+- In the baseline top module, inputs are not registered.
+  - If input signals change while the FSM is active, the ALU output may reflect the latest inputs.
+  - This behavior is expected and documented.
 
-- **FSM Controller (Control Unit)**  
-  Sequences operations across clock cycles using defined states.
+- Output stability is guaranteed only when the `done` signal is asserted.
+  - Output behavior outside this window is not constrained.
 
-- **Top Module**  
-  Integrates control and datapath and exposes a system-level interface.
+- The design does not include:
+  - Input/output buffering
+  - Pipelining
+  - Error handling for invalid ALU operation codes
 
-The architecture is intentionally simple to allow focused verification.
-
----
-
-## FSM Controller
-- Moore finite state machine
-- States:
-  - IDLE
-  - LOAD
-  - EXECUTE
-  - DONE
-- Clean synchronous behavior
-- Reset forces IDLE state
-- Control outputs (`load`, `execute`, `done`) are mutually exclusive
-
----
-
-## Verification Progress
-
-### FSM Abuse and Robustness Testing (Week 2 – Day 2)
-The FSM is verified using an **abuse-style testbench**, where inputs are intentionally applied in invalid or unexpected ways.
-
-Test scenarios include:
-- `start` held high for multiple cycles
-- `start` asserted while FSM is already busy
-- Back-to-back
+These limitations are intentional and serve as motivation for future extensions rather than indicating incorrect behavior.
